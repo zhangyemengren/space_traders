@@ -36,15 +36,16 @@ enum Response{
 /// # method
 /// GET
 /// # request
-/// ```
-/// Query{
+/// ### Query
+/// ```json
+/// {
 ///     limit: u32,
 ///     page: u32,
 /// }
 /// ```
 /// # response
-/// ## success
-/// ```
+/// ### success
+/// ```json
 /// {
 ///   "data": [
 ///     {
@@ -68,8 +69,8 @@ enum Response{
 ///   }
 /// }
 /// ```
-/// ## fail
-/// ```
+/// ### fail
+/// ```json
 /// {
 ///    "error": {
 ///       "message": "hello world",
