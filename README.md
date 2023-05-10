@@ -8,4 +8,9 @@ cargo test --test mod_name func_name -q -- --nocapture
 cargo test  func_name -q -- --nocapture
 ```
 
-## TOKEN 存储在github Environments
+## 在需要文档注释说明的地方使用rust 三斜线注释 /// 具体见main.rs 注释
+```bash
+cargo doc --open --no-deps
+```
+
+### TOKEN 存储在github Environments
