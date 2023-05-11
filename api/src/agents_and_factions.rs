@@ -1,34 +1,32 @@
-use crate::common::{get_token, ErrorRes};
-use std::{collections::HashMap};
-use reqwest::{self, Client};
+use crate::common::{ErrorRes, get};
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
 struct Meta {
     total: u32,
     limit: u32,
     page: u32,
 }
-#[derive(Debug, serde::Deserialize)]
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
 struct Traits{
     symbol: String,
     name: String,
     description: String,
 }
-#[derive(Debug, serde::Deserialize)]
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
 struct Data{
     #[serde(flatten)]
     flatten_traits: Traits,
     headquarters: String,
     traits: Vec<Traits>,
 }
-#[derive(Debug, serde::Deserialize)]
-struct Success{
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
+pub struct Success{
     data: Vec<Data>,
     meta: Meta,
 }
-#[derive(Debug, serde::Deserialize)]
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
 #[serde(untagged)]
-enum Response{
+pub enum Response{
     Success(Success),
     Error(ErrorRes),
 }
@@ -80,14 +78,7 @@ enum Response{
 /// }
 /// ```
 pub async fn view_factions() -> Result<Response, Box<dyn std::error::Error>> {
-    let c = Client::new();
-    let resp = c.get("https:///api.spacetraders.io/v2/factions")
-        .header("Authorization","Bearer ".to_string() + get_token().as_str())
-        .send()
-        .await?
-        .json::<Response>()
-        .await?;
-    Ok(resp)
+    get("https:///api.spacetraders.io/v2/factions").await
 }
 
 
@@ -96,9 +87,9 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn it_works() {
-        let ip = view_factions().await.unwrap();
-        println!("{:?}", ip);
+    async fn test_view_factions() {
+        let res = view_factions().await.unwrap();
+        println!("{:?}", res);
         assert!(true);
     }
 }
