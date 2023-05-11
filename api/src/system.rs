@@ -65,7 +65,8 @@ pub enum Response{
 ///       "waypoints": [
 ///         {
 ///           "symbol": "string",
-///           "type": "PLANET", // PLANETGAS GIANTMOONORBITAL STATIONJUMP GATEASTEROID FIELDNEBULADEBRIS FIELDGRAVITY WELL
+///           "type": "PLANET", // PLANETGAS GIANTMOONORBITAL STATIONJUMP GATEASTEROID
+///               FIELDNEBULADEBRIS FIELDGRAVITY WELL
 ///           "x": 0,
 ///           "y": 0
 ///         }
