@@ -8,17 +8,25 @@ struct Meta {
     page: u32,
 }
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
-struct Traits{
-    symbol: String,
-    name: String,
-    description: String,
-}
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
 struct Data{
     #[serde(flatten)]
-    flatten_traits: Traits,
-    headquarters: String,
-    traits: Vec<Traits>,
+    flatten_waypoints: Waypoints,
+    #[serde(rename = "sectorSymbol")]
+    sector_symbol: String,
+    waypoints: Vec<Waypoints>,
+    factions: Vec<Factions>,
+}
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
+struct Waypoints{
+    symbol: String,
+    #[serde(rename = "type")]
+    the_type: String,
+    x: i32,
+    y: i32,
+}
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
+struct Factions{
+    symbol: String,
 }
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Success{
@@ -31,7 +39,7 @@ pub enum Response{
     Success(Success),
     Error(ErrorRes),
 }
-/// 列出游戏中所有发现的派系。
+/// 列出宇宙中所有的系统。
 /// # method
 /// GET
 /// # request
@@ -49,14 +57,22 @@ pub enum Response{
 ///   "data": [
 ///     {
 ///       "symbol": "string",
-///       "name": "string",
-///       "description": "string",
-///       "headquarters": "string",
-///       "traits": [
+///       "sectorSymbol": "string",
+///       "type": "NEUTRON_STAR", // NEUTRON_STAR RED_STAR ORANGE_STAR BLUE_STAR
+///           YOUNG_STAR WHITE_DWARF BLACK_HOLE HYPERGIANT NEBULA UNSTABLE
+///       "x": 0,
+///       "y": 0,
+///       "waypoints": [
 ///         {
-///           "symbol": "BUREAUCRATIC",
-///           "name": "string",
-///           "description": "string"
+///           "symbol": "string",
+///           "type": "PLANET", // PLANETGAS GIANTMOONORBITAL STATIONJUMP GATEASTEROID FIELDNEBULADEBRIS FIELDGRAVITY WELL
+///           "x": 0,
+///           "y": 0
+///         }
+///       ],
+///       "factions": [
+///         {
+///           "symbol": "string"
 ///         }
 ///       ]
 ///     }
@@ -78,21 +94,20 @@ pub enum Response{
 ///     }
 /// }
 /// ```
-pub async fn list_factions(page: &str) -> Result<Response, Box<dyn std::error::Error>> {
-    let mut url = Url::parse("https:///api.spacetraders.io/v2/factions").expect("url parse error");
+pub async fn list_systems(page: &str) -> Result<Response, Box<dyn std::error::Error>> {
+    let mut url = Url::parse("https:///api.spacetraders.io/v2/systems").expect("url parse error");
     url.query_pairs_mut().append_pair("limit", "20").append_pair("page", page);
     get(url.as_str()).await
 }
-
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_list_factions() {
-        let res = list_factions("1").await.unwrap();
-        println!("{:?}", res);
+    async fn test_list_systems() {
+        let res = list_systems("1").await.unwrap();
+        println!("{:#?}", res);
         assert!(true);
     }
 }
