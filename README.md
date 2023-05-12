@@ -20,4 +20,14 @@ cargo test  func_name -q -- --nocapture
 cargo doc --open --no-deps
 ```
 
+## 更新trunk
+```bash
+cargo install trunk --force
+```
+
+## 运行web ui
+```bash
+trunk serve --open
+```
+
 ### TOKEN 存储在github Environments
