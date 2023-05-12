@@ -1,6 +1,13 @@
 # space_traders
 
-## run tests
+## workspace
+| 条目     | 用途                      |
+|--------|-------------------------|
+| api    | space_traders官方API及组合操作 |
+| ui     | 可视化当前状态及操作              |
+| script | 运行后台任务，定时任务和执行特定策略      |
+
+## 运行测试
 ```bash
 // --test 集成测试模式 mod_name模块名 func_name函数名 -q 不显示cargo 输出 -- --nocapture 显示测试输出
 cargo test --test mod_name func_name -q -- --nocapture
@@ -8,7 +15,7 @@ cargo test --test mod_name func_name -q -- --nocapture
 cargo test  func_name -q -- --nocapture
 ```
 
-## 在需要文档注释说明的地方使用rust 三斜线注释 /// 具体见main.rs 注释
+## 生成文档
 ```bash
 cargo doc --open --no-deps
 ```
