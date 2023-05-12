@@ -72,14 +72,14 @@ pub enum Response{
 /// ```json
 /// {
 ///    "error": {
-///       "message": "hello world",
+///       "message": "reasons",
 ///       "code": 0,
 ///       "data": {}
 ///     }
 /// }
 /// ```
 pub async fn list_factions(page: &str) -> Result<Response, Box<dyn std::error::Error>> {
-    let mut url = Url::parse("https:///api.spacetraders.io/v2/factions").expect("url parse error");
+    let mut url = Url::parse("https://api.spacetraders.io/v2/factions").expect("url parse error");
     url.query_pairs_mut().append_pair("limit", "20").append_pair("page", page);
     get(url.as_str()).await
 }
@@ -92,7 +92,7 @@ mod tests {
     #[tokio::test]
     async fn test_list_factions() {
         let res = list_factions("1").await.unwrap();
-        println!("{:?}", res);
+        println!("{:#?}", res);
         assert!(true);
     }
 }

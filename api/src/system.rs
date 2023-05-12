@@ -89,14 +89,14 @@ pub enum Response{
 /// ```json
 /// {
 ///    "error": {
-///       "message": "hello world",
+///       "message": "reasons",
 ///       "code": 0,
 ///       "data": {}
 ///     }
 /// }
 /// ```
 pub async fn list_systems(page: &str) -> Result<Response, Box<dyn std::error::Error>> {
-    let mut url = Url::parse("https:///api.spacetraders.io/v2/systems").expect("url parse error");
+    let mut url = Url::parse("https://api.spacetraders.io/v2/systems").expect("url parse error");
     url.query_pairs_mut().append_pair("limit", "20").append_pair("page", page);
     get(url.as_str()).await
 }
