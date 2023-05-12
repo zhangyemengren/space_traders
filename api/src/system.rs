@@ -1,14 +1,8 @@
-use crate::common::{ErrorRes, get};
+use crate::common::{get, Waypoints, Response, SuccessVec, Success};
 use reqwest::Url;
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
-struct Meta {
-    total: u32,
-    limit: u32,
-    page: u32,
-}
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-struct Data{
+pub struct Data{
     #[serde(flatten)]
     flatten_waypoints: Waypoints,
     #[serde(rename = "sectorSymbol")]
@@ -17,28 +11,10 @@ struct Data{
     factions: Vec<Factions>,
 }
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
-struct Waypoints{
-    symbol: String,
-    #[serde(rename = "type")]
-    the_type: String,
-    x: i32,
-    y: i32,
-}
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-struct Factions{
+pub struct Factions{
     symbol: String,
 }
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-pub struct Success{
-    data: Vec<Data>,
-    meta: Meta,
-}
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-#[serde(untagged)]
-pub enum Response{
-    Success(Success),
-    Error(ErrorRes),
-}
+
 /// 列出宇宙中所有的系统。
 /// # method
 /// GET
@@ -95,9 +71,63 @@ pub enum Response{
 ///     }
 /// }
 /// ```
-pub async fn list_systems(page: &str) -> Result<Response, Box<dyn std::error::Error>> {
+pub async fn list_systems(page: &str) -> Result<Response<SuccessVec<Data>>, Box<dyn std::error::Error>> {
     let mut url = Url::parse("https://api.spacetraders.io/v2/systems").expect("url parse error");
     url.query_pairs_mut().append_pair("limit", "20").append_pair("page", page);
+    get(url.as_str()).await
+}
+
+/// 获取系统的详细信息。
+/// # method
+/// GET
+/// # request
+/// ### Query
+/// ```json
+/// {
+///     limit: u32,
+///     page: u32,
+/// }
+/// ```
+/// # response
+/// ### success
+/// ```json
+/// {
+///   "data": {
+///       "symbol": "string",
+///       "sectorSymbol": "string",
+///       "type": "NEUTRON_STAR", // NEUTRON_STAR RED_STAR ORANGE_STAR BLUE_STAR
+///           YOUNG_STAR WHITE_DWARF BLACK_HOLE HYPERGIANT NEBULA UNSTABLE
+///       "x": 0,
+///       "y": 0,
+///       "waypoints": [
+///         {
+///           "symbol": "string",
+///           "type": "PLANET", // PLANETGAS GIANTMOONORBITAL STATIONJUMP GATEASTEROID
+///               FIELDNEBULADEBRIS FIELDGRAVITY WELL
+///           "x": 0,
+///           "y": 0
+///         }
+///       ],
+///       "factions": [
+///         {
+///           "symbol": "string"
+///         }
+///       ]
+///   },
+/// }
+/// ```
+/// ### fail
+/// ```json
+/// {
+///    "error": {
+///       "message": "reasons",
+///       "code": 0,
+///       "data": {}
+///     }
+/// }
+/// ```
+pub async fn get_system(system: &str) -> Result<Response<Success<Data>>, Box<dyn std::error::Error>> {
+    let url = Url::parse(&format!("https://api.spacetraders.io/v2/systems/{}", system)).expect("url parse error");
     get(url.as_str()).await
 }
 
@@ -108,6 +138,12 @@ mod tests {
     #[tokio::test]
     async fn test_list_systems() {
         let res = list_systems("1").await.unwrap();
+        println!("{:#?}", res);
+        assert!(true);
+    }
+    #[tokio::test]
+    async fn test_get_system() {
+        let res = get_system("X1-DF55").await.unwrap();
         println!("{:#?}", res);
         assert!(true);
     }

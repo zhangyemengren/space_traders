@@ -1,22 +1,12 @@
-use crate::common::{ErrorRes, get};
+use crate::common::{get, Response, Success};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
-struct Data{
+pub struct Data{
     #[serde(rename = "accountId")]
     account_id: String,
     symbol: String,
     headquarters: String,
     credits: i64,
-}
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-pub struct Success{
-    data: Data,
-}
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
-#[serde(untagged)]
-pub enum Response{
-    Success(Success),
-    Error(ErrorRes),
 }
 
 /// 获取代理人的详细信息。
@@ -45,7 +35,7 @@ pub enum Response{
 ///     }
 /// }
 /// ```
-pub async fn my_agent_details() -> Result<Response, Box<dyn std::error::Error>> {
+pub async fn my_agent_details() -> Result<Response<Success<Data>>, Box<dyn std::error::Error>> {
     let resp = get("https://api.spacetraders.io/v2/my/agent").await?;
     Ok(resp)
 }
