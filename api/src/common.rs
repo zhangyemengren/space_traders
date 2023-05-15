@@ -30,6 +30,13 @@ pub struct Waypoints{
     y: i32,
 }
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
+pub struct Destination {
+    #[serde(flatten)]
+    flatten_waypoints: Waypoints,
+    #[serde(rename = "systemSymbol")]
+    system_symbol: String,
+}
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Success<T>{
     data: T,
 }
