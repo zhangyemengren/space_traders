@@ -50,6 +50,7 @@ pub struct SuccessVec<T>{
 pub enum Response<T>{
     Success(T),
     Error(ErrorRes),
+    NoData,
 }
 
 pub fn get_token() -> String {

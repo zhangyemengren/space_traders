@@ -1,5 +1,5 @@
-use crate::common::{get, Destination, Response, SuccessVec};
-use reqwest::Url;
+use crate::common::{get, Destination, Response, SuccessVec, Success, get_token};
+use reqwest::{StatusCode, Url};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub enum Role {
@@ -343,6 +343,17 @@ pub struct Ship {
     cargo: Cargo,
     fuel: Fuel,
 }
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
+pub struct CoolDown{
+    #[serde(rename = "shipSymbol")]
+    ship_symbol: String,
+    #[serde(rename = "totalSeconds")]
+    total_seconds: u32,
+    #[serde(rename = "remainingSeconds")]
+    remaining_seconds: u32,
+    expiration: String,
+}
+
 /// 列出你所有的船
 pub async fn list_ships(
     page: &str,
@@ -354,6 +365,46 @@ pub async fn list_ships(
     get(url.as_str()).await
 }
 
+/// 获取我的船的详细信息
+pub async fn get_ship_detail(ship: &str) -> Result<Response<Success<Ship>>, Box<dyn std::error::Error>> {
+    let url = Url::parse(&format!("https://api.spacetraders.io/v2/my/ships/{}", ship)).expect("url parse error");
+    get(url.as_str()).await
+}
+
+/// 获取你船上的货物信息
+pub async fn get_ship_cargo(ship: &str) -> Result<Response<Success<Cargo>>, Box<dyn std::error::Error>> {
+    let url = Url::parse(&format!("https://api.spacetraders.io/v2/my/ships/{}/cargo", ship)).expect("url parse error");
+    get(url.as_str()).await
+}
+/// 检索您的飞船反应堆冷却时间的详细信息。激活跳跃引擎、扫描或提取资源等某些操作会加重反应堆的负担并导致冷却时间。
+///
+/// 在您的冷却时间到期之前，您的飞船无法执行其他操作。冷却时间的长短与相关模块或坐骑的功耗有关。
+///
+/// 当飞船没有冷却时间时，响应返回 204 状态代码（无内容）。
+pub async fn get_ship_cooldown(ship: &str) -> Result<Response<Success<CoolDown>>, Box<dyn std::error::Error>> {
+    let url = Url::parse(&format!("https://api.spacetraders.io/v2/my/ships/{}/cooldown", ship)).expect("url parse error");
+    let c = reqwest::Client::new();
+    let res = c
+        .get(url)
+        .header("Authorization","Bearer ".to_string() + get_token().as_str())
+        .send()
+        .await?;
+    let status = res.status();
+    match status {
+        StatusCode::OK => {
+            let s = res.json::<Success<CoolDown>>().await?;
+            Ok(Response::Success(s))
+        }
+        StatusCode::NO_CONTENT => {
+            Ok(Response::NoData)
+        }
+        _ => {
+            let e = res.text().await?;
+            println!("{}", e);
+            Err("获取飞船冷却时间失败".into())
+        }
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -361,6 +412,24 @@ mod tests {
     #[tokio::test]
     async fn test_list_ships() {
         let res = list_ships("1").await.unwrap();
+        println!("{:#?}", res);
+        assert!(true);
+    }
+    #[tokio::test]
+    async fn test_get_ship_detail() {
+        let res = get_ship_detail("ZHANGYEMENGREN-1").await.unwrap();
+        println!("{:#?}", res);
+        assert!(true);
+    }
+    #[tokio::test]
+    async fn test_get_ship_cargo() {
+        let res = get_ship_cargo("ZHANGYEMENGREN-1").await.unwrap();
+        println!("{:#?}", res);
+        assert!(true);
+    }
+    #[tokio::test]
+    async fn test_get_ship_cooldown() {
+        let res = get_ship_cooldown("ZHANGYEMENGREN-1").await.unwrap();
         println!("{:#?}", res);
         assert!(true);
     }
