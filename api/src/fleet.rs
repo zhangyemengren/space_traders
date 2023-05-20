@@ -1,4 +1,4 @@
-use crate::common::{get, Destination, Response, SuccessVec, Success, get_token};
+use crate::common::{get, Destination, Response, SuccessVec, Success, get_token, post};
 use reqwest::{StatusCode, Url};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
@@ -405,6 +405,16 @@ pub async fn get_ship_cooldown(ship: &str) -> Result<Response<Success<CoolDown>>
         }
     }
 }
+
+///导航到目标目的地。目的地必须与船舶位于同一系统内。航行将消耗船舶清单中必要的燃料和补给，并从代理账户中支付船员工资。
+///
+/// 返回的响应将详细说明路线信息，包括预计到达时间。在船只到达目的地之前，大多数船只操作都不可用。
+///
+/// 要在星系之间旅行，请查看飞船的跃迁或跳跃动作。
+pub async fn navigate_ship(ship: &str, way: &str) -> Result<Response<Success<Ship>>, Box<dyn std::error::Error>>{
+    let url = Url::parse(&format!("https://api.spacetraders.io/v2/my/ships/{}/navigate", ship)).expect("url parse error");
+    post(url.as_str(), serde_json::json!({"waypointSymbol": way})).await
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -430,6 +440,12 @@ mod tests {
     #[tokio::test]
     async fn test_get_ship_cooldown() {
         let res = get_ship_cooldown("ZHANGYEMENGREN-1").await.unwrap();
+        println!("{:#?}", res);
+        assert!(true);
+    }
+    #[tokio::test]
+    async fn test_navigate_ship() {
+        let res = navigate_ship("ZHANGYEMENGREN-1", "OE").await.unwrap();
         println!("{:#?}", res);
         assert!(true);
     }

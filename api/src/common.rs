@@ -73,3 +73,20 @@ where
     Ok(resp)
 }
 
+pub async fn post<T, U>(url: &str, body: U) -> Result<T,Box<dyn std::error::Error>>
+where
+    T: serde::de::DeserializeOwned + Debug,
+    U: serde::Serialize,
+{
+    let c = Client::new();
+    let resp = c
+        .post(url)
+        .header("Authorization","Bearer ".to_string() + get_token().as_str())
+        .json(&body)
+        .send()
+        .await?
+        .json::<T>()
+        .await?;
+    Ok(resp)
+}
+
