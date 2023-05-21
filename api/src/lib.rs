@@ -4,4 +4,5 @@ pub mod system;
 pub mod agent;
 pub mod fleet;
 pub mod contracts;
+pub mod register;
 

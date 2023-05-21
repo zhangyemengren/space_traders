@@ -38,7 +38,7 @@ pub struct Destination {
 }
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Success<T>{
-    data: T,
+    pub data: T,
 }
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct SuccessVec<T>{
@@ -55,7 +55,13 @@ pub enum Response<T>{
 
 pub fn get_token() -> String {
     dotenv().expect(".env file not found");
-    env::var("token").expect("token not found")
+    match env::var("token") {
+        Ok(token) => token,
+        Err(_) => {
+            println!("token not found in .env file");
+            "".to_string()
+        },
+    }
 }
 
 pub async fn get<T>(url: &str) -> Result<T, Box<dyn std::error::Error>>
@@ -63,9 +69,15 @@ where
     T: serde::de::DeserializeOwned + Debug,
 {
     let c = Client::new();
+    let token = get_token();
     let resp = c
-        .get(url)
-        .header("Authorization","Bearer ".to_string() + get_token().as_str())
+        .get(url);
+    let resp = if token.is_empty(){
+        resp
+    } else {
+        resp.header("Authorization","Bearer ".to_string() + token.as_str())
+    };
+    let resp = resp
         .send()
         .await?
         .json::<T>()
@@ -79,9 +91,15 @@ where
     U: serde::Serialize,
 {
     let c = Client::new();
+    let token = get_token();
     let resp = c
-        .post(url)
-        .header("Authorization","Bearer ".to_string() + get_token().as_str())
+        .post(url);
+    let resp = if token.is_empty(){
+        resp
+    } else {
+        resp.header("Authorization","Bearer ".to_string() + token.as_str())
+    };
+    let resp = resp
         .json(&body)
         .send()
         .await?
