@@ -2,3 +2,4 @@
 .idea
 **/.env
 ui/dist
+ui/style/output.css

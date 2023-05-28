@@ -6,11 +6,12 @@ fn main() {
 
 #[component]
 fn App(cx: Scope) -> impl IntoView {
-    let (count, set_count) = create_signal(cx, 0);
+    let (count, set_count) = create_signal(cx, 1);
 
     view! {
         cx,
         <button
+            class="btn btn-primary bg-red-200 text-blue-600"
             on:click=move |_| {
                 set_count.update(|x| *x += 1);
             }
