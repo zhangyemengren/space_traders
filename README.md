@@ -25,9 +25,9 @@ cargo doc --open --no-deps
 cargo install trunk --force
 ```
 
-## 第一次运行trunk时因为全局没有安装tailwindcss 需要安装(包管理器为pnpm)
+## 第一次运行trunk时因为全局没有安装tailwindcss 需要安装
 ```bash
-pnpm --registry=https://registry.npmjs.org i -g tailwindcss
+npm --registry=https://registry.npmjs.org i -g tailwindcss
 ```
 
 ## 运行web ui
@@ -35,4 +35,5 @@ pnpm --registry=https://registry.npmjs.org i -g tailwindcss
 trunk serve --open
 ```
 
-### TOKEN 存储在github Environments
+### TOKEN 存储在github Environments 本地为api/.env
+```
