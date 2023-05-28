@@ -1,11 +1,13 @@
 mod app;
+mod js_bind;
 
 use app::*;
 use leptos::*;
+use js_bind::{js_console};
 
 pub fn main() {
 
-    println!("csr mode - mounting to body");
+    js_console();
 
     mount_to_body(|cx| {
         view! { cx, <App /> }
