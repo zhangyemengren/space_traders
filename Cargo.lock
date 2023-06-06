@@ -44,7 +44,6 @@ checksum = "9c7d0618f0e0b7e8ff11427422b64564d5fb0be1940354bfe2e0529b18a9d9b8"
 name = "api"
 version = "0.1.0"
 dependencies = [
- "dotenvy",
  "reqwest",
  "serde",
  "serde_json",
@@ -312,12 +311,6 @@ name = "dlv-list"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0688c2a7f92e427f44895cd63841bff7b29f8d7a1648b9e7e07a4a365b2e1257"
-
-[[package]]
-name = "dotenvy"
-version = "0.15.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1aaf95b3e5c8f23aa320147307562d361db0ae0d51242340f558153b4eb2439b"
 
 [[package]]
 name = "drain_filter_polyfill"
@@ -1947,8 +1940,12 @@ checksum = "9e79c4d996edb816c91e4308506774452e55e95c3c9de07b6729e17e15a5ef81"
 name = "ui"
 version = "0.1.0"
 dependencies = [
+ "api",
  "leptos",
  "leptos_router",
+ "reqwest",
+ "serde",
+ "serde_json",
  "wasm-bindgen",
 ]
 

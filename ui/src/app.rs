@@ -1,6 +1,7 @@
 use leptos::*;
 use leptos_router::*;
 use crate::js_bind::{run, js_console};
+use api::agent::my_agent_details;
 
 #[component]
 pub fn App(cx: Scope) -> impl IntoView {
@@ -17,7 +18,7 @@ pub fn App(cx: Scope) -> impl IntoView {
 #[component]
 fn Home(cx: Scope) -> impl IntoView {
     let (count, set_count) = create_signal(cx, 0);
-    let res_str = create_local_resource(cx, move || (), |_| run());
+    let res_str = create_local_resource(cx, move || (), |_| my_agent_details());
 
     view! { cx,
         <div class="my-0 mx-auto max-w-3xl text-center">

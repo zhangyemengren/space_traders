@@ -12,3 +12,4 @@ wasm-bindgen = "0.2"
 reqwest.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+api = { path = "../api" }
