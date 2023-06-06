@@ -1,5 +1,6 @@
 use leptos::*;
 use leptos_router::*;
+use crate::js_bind::{run, js_console};
 
 #[component]
 pub fn App(cx: Scope) -> impl IntoView {
@@ -16,6 +17,7 @@ pub fn App(cx: Scope) -> impl IntoView {
 #[component]
 fn Home(cx: Scope) -> impl IntoView {
     let (count, set_count) = create_signal(cx, 0);
+    let res_str = create_local_resource(cx, move || (), |_| run());
 
     view! { cx,
         <div class="my-0 mx-auto max-w-3xl text-center">
@@ -32,6 +34,9 @@ fn Home(cx: Scope) -> impl IntoView {
                     count.get().to_string()
                 }}
                 " | Some more text"
+            </button>
+            <button on:click= |_| { js_console();}>
+                "api test"
             </button>
         </div>
     }
