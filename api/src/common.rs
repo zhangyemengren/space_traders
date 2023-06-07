@@ -52,7 +52,8 @@ pub enum Response<T>{
 }
 
 pub fn get_token() -> String {
-    let token = "x12345";
+    // token先写死 因为web-wasm环境不支持读文件 后续在优化
+    let token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGlmaWVyIjoiWkhBTkdZRU1FTkdSRU4iLCJ2ZXJzaW9uIjoidjIiLCJyZXNldF9kYXRlIjoiMjAyMy0wNi0wMyIsImlhdCI6MTY4NjExNjQyNiwic3ViIjoiYWdlbnQtdG9rZW4ifQ.yAK0npSzzck0-CZy2yhuMHSQwcrUTjMM36u1DYZ2LY3hv9hNHdcKPR5a0xF_n2pFR8S0EwSuYmSxTEXHYj90qhTBji5LKrnEs8lh7qmyU8hDp07B8EPTww0nqCe7QbCCzMGIzb5isdiDj6ipeoFT8MyNqbl7km62HSG-C6eHC_5v4zS6lwVIipnxc5TBHwMNc4vi7uUeM372WuKVFBL206On26P7IN8QiLp8aGXPvOFZaSlAAD8-hUixNINlpZ_-AYWTydJNBZsw0rahQUcPo69cQl86uWs3hY3ytCd7a7sqzOcXWVHG3XH7AajT2SZYgqwKKBXKBx15GdMcQI-cQQ";
     token.to_string()
 }
 

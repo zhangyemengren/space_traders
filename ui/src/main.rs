@@ -1,5 +1,8 @@
 mod app;
 mod js_bind;
+mod nav;
+mod home;
+mod system;
 
 use app::*;
 use leptos::*;

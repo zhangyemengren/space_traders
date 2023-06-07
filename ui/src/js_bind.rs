@@ -9,22 +9,12 @@ extern "C" {
     fn log_u32(a: u32);
     #[wasm_bindgen(js_namespace = console, js_name = log)]
     fn log_many(a: &str, b: &str);
+    #[wasm_bindgen(js_namespace = console, js_name = log)]
+    fn log_obj(obj: &JsValue);
 }
 pub fn js_console() {
     log("Hello from Rust!");
     log_u32(42);
     log_many("Logging", "many values!");
-}
-
-pub async fn run() -> Result<JsValue, JsValue> {
-    let res = reqwest::Client::new()
-        .get("https://api.github.com/repos/rustwasm/wasm-bindgen/branches/master")
-        .header("Accept", "application/vnd.github.v3+json")
-        .send()
-        .await?;
-
-    let text = res.text().await?;
-    let branch_info: serde_json::Value = serde_json::from_str(&text).unwrap();
-
-    Ok(JsValue::from_str(&branch_info.as_str().unwrap()))
+    log_obj(&JsValue::from("{a: 1, b: 2}"));
 }
