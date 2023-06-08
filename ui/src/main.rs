@@ -10,8 +10,6 @@ use js_bind::{js_console};
 
 pub fn main() {
 
-    js_console();
-
     mount_to_body(|cx| {
         view! { cx, <App /> }
     });

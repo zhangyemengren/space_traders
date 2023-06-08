@@ -1,12 +1,26 @@
 use api::contracts::list_contracts;
 use leptos::*;
+use wasm_bindgen::JsValue;
+use crate::js_bind::{js_console};
+
+async fn send_new_todo_to_api(task: String) -> String {
+    // do something...
+    // return a task id
+    "42".to_string()
+}
 
 #[component]
 pub fn System(cx: Scope) -> impl IntoView {
     let (_, _) = create_signal(cx, "0".to_string());
     let get_contracts = create_action(cx, |page: &String| {
-        list_contracts(page.clone())
+        send_new_todo_to_api(page.clone())
     });
+    let datas = get_contracts.value();
+    let res = datas.get_untracked();
+    match res {
+        Some(v) => js_console(&serde_wasm_bindgen::to_value(&v).unwrap()),
+        _ => js_console(&JsValue::from_str("no data")),
+    }
     view! {
         cx,
         <div>

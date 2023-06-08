@@ -37,3 +37,6 @@ trunk serve --open
 
 ### TOKEN 存储在github Environments 本地为api/.env
 ```
+
+## todo list from 2023.6.7
+ -[ ] wasm-bindgen console 支持JsValue

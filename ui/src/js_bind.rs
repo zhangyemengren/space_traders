@@ -12,9 +12,9 @@ extern "C" {
     #[wasm_bindgen(js_namespace = console, js_name = log)]
     fn log_obj(obj: &JsValue);
 }
-pub fn js_console() {
+pub fn js_console(v: &JsValue) {
     log("Hello from Rust!");
     log_u32(42);
     log_many("Logging", "many values!");
-    log_obj(&JsValue::from("{a: 1, b: 2}"));
+    log_obj(v);
 }
