@@ -1,12 +1,12 @@
 use crate::common::{get, Response, Success};
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
 pub struct Data{
     #[serde(rename = "accountId")]
-    account_id: String,
-    symbol: String,
-    headquarters: String,
-    credits: i64,
+    pub account_id: String,
+    pub symbol: String,
+    pub headquarters: String,
+    pub credits: i64,
 }
 
 /// 获取代理人的详细信息。

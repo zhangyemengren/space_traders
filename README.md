@@ -41,5 +41,6 @@ trunk serve --open
 
 ## todo list from 2023.6.7
 - [x] wasm-bindgen console 支持JsValue
-- [ ] serde转换 处理api返回的数据 键值对显示
+- [x] serde转换 处理api返回的数据 键值对显示
 - [ ] leptos 列表
+- [ ] my_agent 优化 let else 报错 原因不明
