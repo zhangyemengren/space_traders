@@ -16,7 +16,7 @@ mod test{
     use super::*;
     #[tokio::test]
     async fn test_list_contracts() {
-        let res = list_contracts("1").await.unwrap();
+        let res = list_contracts("1".to_string()).await.unwrap();
         println!("{:#?}", res);
         assert!(true);
     }

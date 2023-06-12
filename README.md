@@ -35,8 +35,11 @@ npm --registry=https://registry.npmjs.org i -g tailwindcss
 trunk serve --open
 ```
 
-### TOKEN 存储在github Environments 本地为api/.env
-```
+## tips
+- token目前是写死的
+
 
 ## todo list from 2023.6.7
- -[ ] wasm-bindgen console 支持JsValue
+- [x] wasm-bindgen console 支持JsValue
+- [ ] serde转换 处理api返回的数据 键值对显示
+- [ ] leptos 列表

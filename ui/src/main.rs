@@ -6,7 +6,6 @@ mod system;
 
 use app::*;
 use leptos::*;
-use js_bind::{js_console};
 
 pub fn main() {
 
