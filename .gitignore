@@ -3,3 +3,4 @@
 **/.env
 ui/dist
 ui/style/output.css
+**/.DS_Store
