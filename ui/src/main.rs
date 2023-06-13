@@ -4,6 +4,7 @@ mod nav;
 mod home;
 mod system;
 mod my_agent;
+mod fleet;
 
 use app::*;
 use leptos::*;
