@@ -43,5 +43,4 @@ trunk serve --open
 - [x] wasm-bindgen console 支持JsValue
 - [x] serde转换 处理api返回的数据 键值对显示
 - [ ] leptos 列表
-- [x] my_agent 优化 let else 报错(else 块语法错误)
 - [ ] 移动船
