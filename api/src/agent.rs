@@ -7,6 +7,8 @@ pub struct Data{
     pub symbol: String,
     pub headquarters: String,
     pub credits: i64,
+    #[serde(rename = "startingFaction")]
+    pub starting_faction: String,
 }
 
 /// 获取代理人的详细信息。
