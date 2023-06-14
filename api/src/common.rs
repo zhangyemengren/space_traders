@@ -1,31 +1,31 @@
-use std::fmt::Debug;
-use serde_json::Value;
 use reqwest::{self, Client};
+use serde_json::Value;
+use std::fmt::Debug;
 
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
-pub struct Error{
+pub struct Error {
     message: String,
     code: u32,
     #[serde(default)]
     data: Value,
 }
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
-pub struct ErrorRes{
-    error:Error
+pub struct ErrorRes {
+    error: Error,
 }
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
 pub struct Meta {
-    total: u32,
-    limit: u32,
-    page: u32,
+    pub total: u32,
+    pub limit: u32,
+    pub page: u32,
 }
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
-pub struct Waypoints{
-    symbol: String,
+pub struct Waypoints {
+    pub symbol: String,
     #[serde(rename = "type")]
-    the_type: String,
-    x: i32,
-    y: i32,
+    pub the_type: String,
+    pub x: i32,
+    pub y: i32,
 }
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
 pub struct Destination {
@@ -35,17 +35,17 @@ pub struct Destination {
     system_symbol: String,
 }
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
-pub struct Success<T>{
+pub struct Success<T> {
     pub data: T,
 }
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
-pub struct SuccessVec<T>{
+pub struct SuccessVec<T> {
     data: Vec<T>,
     meta: Meta,
 }
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
 #[serde(untagged)]
-pub enum Response<T>{
+pub enum Response<T> {
     Success(T),
     Error(ErrorRes),
     NoData,
@@ -63,41 +63,29 @@ where
 {
     let c = Client::new();
     let token = get_token();
-    let resp = c
-        .get(url);
-    let resp = if token.is_empty(){
+    let resp = c.get(url);
+    let resp = if token.is_empty() {
         resp
     } else {
-        resp.header("Authorization","Bearer ".to_string() + token.as_str())
+        resp.header("Authorization", "Bearer ".to_string() + token.as_str())
     };
-    let resp = resp
-        .send()
-        .await?
-        .json::<T>()
-        .await?;
+    let resp = resp.send().await?.json::<T>().await?;
     Ok(resp)
 }
 
-pub async fn post<T, U>(url: &str, body: U) -> Result<T,Box<dyn std::error::Error>>
+pub async fn post<T, U>(url: &str, body: U) -> Result<T, Box<dyn std::error::Error>>
 where
     T: serde::de::DeserializeOwned + Debug,
     U: serde::Serialize,
 {
     let c = Client::new();
     let token = get_token();
-    let resp = c
-        .post(url);
-    let resp = if token.is_empty(){
+    let resp = c.post(url);
+    let resp = if token.is_empty() {
         resp
     } else {
-        resp.header("Authorization","Bearer ".to_string() + token.as_str())
+        resp.header("Authorization", "Bearer ".to_string() + token.as_str())
     };
-    let resp = resp
-        .json(&body)
-        .send()
-        .await?
-        .json::<T>()
-        .await?;
+    let resp = resp.json(&body).send().await?.json::<T>().await?;
     Ok(resp)
 }
-

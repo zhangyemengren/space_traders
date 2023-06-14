@@ -42,5 +42,6 @@ trunk serve --open
 ## todo list from 2023.6.7
 - [x] wasm-bindgen console 支持JsValue
 - [x] serde转换 处理api返回的数据 键值对显示
-- [ ] leptos 列表
+- [x] leptos 列表
+- [ ] 参数从表单获取
 - [ ] 移动船

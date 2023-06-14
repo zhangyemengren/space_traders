@@ -1,18 +1,18 @@
 use crate::common::{get, Waypoints, Response, SuccessVec, Success};
 use reqwest::Url;
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
 pub struct Data{
     #[serde(flatten)]
-    flatten_waypoints: Waypoints,
+    pub flatten_waypoints: Waypoints,
     #[serde(rename = "sectorSymbol")]
-    sector_symbol: String,
-    waypoints: Vec<Waypoints>,
-    factions: Vec<Factions>,
+    pub sector_symbol: String,
+    pub waypoints: Vec<Waypoints>,
+    pub factions: Vec<Factions>,
 }
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
 pub struct Factions{
-    symbol: String,
+    pub symbol: String,
 }
 
 /// 列出宇宙中所有的系统。
@@ -71,9 +71,9 @@ pub struct Factions{
 ///     }
 /// }
 /// ```
-pub async fn list_systems(page: &str) -> Result<Response<SuccessVec<Data>>, Box<dyn std::error::Error>> {
+pub async fn list_systems(page: String) -> Result<Response<SuccessVec<Data>>, Box<dyn std::error::Error>> {
     let mut url = Url::parse("https://api.spacetraders.io/v2/systems").expect("url parse error");
-    url.query_pairs_mut().append_pair("limit", "20").append_pair("page", page);
+    url.query_pairs_mut().append_pair("limit", "20").append_pair("page", &page);
     get(url.as_str()).await
 }
 
@@ -126,7 +126,7 @@ pub async fn list_systems(page: &str) -> Result<Response<SuccessVec<Data>>, Box<
 ///     }
 /// }
 /// ```
-pub async fn get_system(system: &str) -> Result<Response<Success<Data>>, Box<dyn std::error::Error>> {
+pub async fn get_system(system: String) -> Result<Response<Success<Data>>, Box<dyn std::error::Error>> {
     let url = Url::parse(&format!("https://api.spacetraders.io/v2/systems/{}", system)).expect("url parse error");
     get(url.as_str()).await
 }
@@ -137,13 +137,13 @@ mod tests {
 
     #[tokio::test]
     async fn test_list_systems() {
-        let res = list_systems("1").await.unwrap();
+        let res = list_systems("1".to_string()).await.unwrap();
         println!("{:#?}", res);
         assert!(true);
     }
     #[tokio::test]
     async fn test_get_system() {
-        let res = get_system("X1-DF55").await.unwrap();
+        let res = get_system("X1-DF55".to_string()).await.unwrap();
         println!("{:#?}", res);
         assert!(true);
     }
