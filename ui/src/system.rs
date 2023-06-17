@@ -65,8 +65,8 @@ pub fn System(cx: Scope) -> impl IntoView {
         <div>
         "this is system"
             <div>
-                <button class="block" on:click= move |_| {get_contracts.dispatch("1".to_string())}>"点击获取所有合同"</button>
-                <button class="block" on:click= move |_| {get_system.dispatch("X1-KS52".to_string())}>"点击获取系统详细信息"</button>
+                <button class="block btn" on:click= move |_| {get_contracts.dispatch("1".to_string())}>"点击获取所有合同"</button>
+                <button class="block btn" on:click= move |_| {get_system.dispatch("X1-KS52".to_string())}>"点击获取系统详细信息"</button>
             </div>
             <div>
                 <ul>{move || systems()}</ul>
