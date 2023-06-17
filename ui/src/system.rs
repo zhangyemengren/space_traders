@@ -9,7 +9,8 @@ use wasm_bindgen::JsValue;
 
 #[component]
 pub fn System(cx: Scope) -> impl IntoView {
-    let (_, _) = create_signal(cx, "0".to_string());
+    // 系统名输入框
+    let (system_name, set_system_name) = create_signal(cx, "".to_string());
     let get_contracts = create_action(cx, |page: &String| {
         let page = page.clone();
         async move { list_contracts(page).await.ok() }
@@ -66,7 +67,16 @@ pub fn System(cx: Scope) -> impl IntoView {
         "this is system"
             <div>
                 <button class="block btn" on:click= move |_| {get_contracts.dispatch("1".to_string())}>"点击获取所有合同"</button>
-                <button class="block btn" on:click= move |_| {get_system.dispatch("X1-KS52".to_string())}>"点击获取系统详细信息"</button>
+                <button class="block btn" on:click= move |_| {get_system.dispatch(system_name.get())}>"点击获取系统详细信息"</button>
+                <input
+                    type="text"
+                    placeholder="Type here"
+                    class="input input-bordered input-primary w-full max-w-xs"
+                    on:input= move |e| {
+                        set_system_name.set(event_target_value(&e))
+                    }
+                    prop:value=move || system_name.get().to_string()
+                />
             </div>
             <div>
                 <ul>{move || systems()}</ul>

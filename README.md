@@ -43,5 +43,8 @@ trunk serve --open
 - [x] wasm-bindgen console 支持JsValue
 - [x] serde转换 处理api返回的数据 键值对显示
 - [x] leptos 列表
-- [ ] 参数从表单获取
+- [x] ui 更新
+- [x] 参数从表单获取
+- [ ] table
+- [ ] 分页器
 - [ ] 移动船
